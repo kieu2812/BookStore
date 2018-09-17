@@ -21,6 +21,7 @@ As an administration role, you are be able to add new book, update book and dele
 
 The input forms are validated using Spring Validation and DAOs/Services are tested by JUnit.
 
+
 -----------------------------------------------------------------------------------------------
 
 In order to import this project onto your development, you need: 
