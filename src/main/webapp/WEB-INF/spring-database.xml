@@ -18,10 +18,6 @@
 	<!-- Hibernate Configuration -->
 	<import resource="classpath:database/Hibernate.xml"/>
 	
-	<!-- Dao Beans Declaration -->
-	<import resource="classpath:beans/User.xml"/>
-	
-	
 	
 	<!-- Enable Annotation based Declarative Transaction Management -->
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
