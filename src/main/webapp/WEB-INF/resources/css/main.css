@@ -1,0 +1,157 @@
+.titleForm{
+	color: #e5532b;
+	font-size: 30px;
+
+	margrin: 10px;
+	text-align:center;
+	opacity: 0.7;
+}
+
+a:hover {
+  background-color: #3ac781;
+  cursor: pointer;
+  text-decoration: none;
+  
+}
+
+a:active {
+  background-color: #3ac781;
+  box-shadow: none;
+  text-decoration: none;
+}
+
+a:visited {
+  background-color: #e2e21d;
+}
+
+
+.link-btn{
+	background-color: #3764ad;
+	color: white;
+	margin: 10px;
+	text-decoration: none;
+	text-transform: uppercase;
+	border-radius: 5px;
+	border: 1px solid transparent;
+}
+tr:nth-child(even){
+	background-color:  #a4c4b8;
+}
+tr:nth-child(odd){
+	background-color: #ced1b5;
+}
+tr:hover{
+	background-color: #edafd3;
+}
+thead:tr{
+	background-color: #efe3ae;	
+}
+
+.errorMessage{
+	color: red;
+	weight-font:bold;
+	margin: 10px;
+	font-family:"monaco,Consolas,Lucida Console,monospace";
+	font-size:18px;
+	text-align:center;
+	
+}
+.totalRow{
+	weight-font: bold;
+	font-size:20px; 
+	color: blue; 
+	background-color:#e6efcb;
+	margin: 10px;
+	text-align:center;
+}
+div.card {
+    width: 85%;
+    box-shadow:  5px 5px #888888;
+    border-radius:5px;
+	margin: 20px auto;
+}
+.center-align{
+	margin:0 auto; 
+	text-align:center;"
+}
+
+.error {
+	padding: 15px;
+	margin-bottom: 20px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: #a94442;
+	background-color: #f2dede;
+	border-color: #ebccd1;
+}
+
+.msg {
+	padding: 15px;
+	margin-bottom: 20px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: #31708f;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+}
+.successMessage{
+	color:#2c74e8;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+}
+li a:hover {
+    background-color: #555;
+    color: green;
+}
+
+#login-box {
+	width: 400px;
+	padding: 20px;
+	margin: 100px auto;
+	background: #fff;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border: 1px solid #000;
+}
+
+
+fieldset, label { margin: 0; padding: 0; }
+body{ margin: 20px; }
+h1 { font-size: 1.5em; margin: 10px; }
+
+/****** Style Star Rating Widget *****/
+
+.rating { 
+  border: none;
+  float: left;
+}
+
+.rating > input { display: none; } 
+.rating > label:before { 
+  margin: 5px;
+  font-size: 1.25em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
+
+.rating > .half:before { 
+  content: "\f089";
+  position: absolute;
+}
+
+.rating > label { 
+  color: #ddd; 
+ float: right; 
+}
+
+
+
+.rating > input:checked ~ label, 
+.rating:not(:checked) > label:hover, 
+.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } 
+
+.rating > input:checked + label:hover,
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label, 
+.rating > input:checked ~ label:hover ~ label { color: #FFED85;  } 

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.perscholas.model.UserAttempts" table="user_attempts">
+
+        <id name="userName" type="string">
+            <column name="username" length="45" />
+            <generator class="assigned" />
+        </id>
+
+        <property name="attempts" type="java.lang.Integer">
+            <column name="attempts" not-null="true" />
+        </property>
+
+        <property name="lastModified" type="timestamp">
+            <column name="lastModified" not-null="true" />
+        </property>
+        
+    </class>
+
+</hibernate-mapping>

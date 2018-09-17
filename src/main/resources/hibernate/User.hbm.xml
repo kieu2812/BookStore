@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.perscholas.model.UserRole" table="user_role">
+
+        <id name="userName" type="string">
+            <column name="username" length="45" />
+            <generator class="assigned" />
+        </id>
+
+        <property name="password" type="string">
+            <column name="password" length="60" not-null="true" />
+        </property>
+
+        <property name="custId" type="java.lang.Integer">
+            <column name="customerid" not-null="true" />
+        </property>
+
+        <property name="role" type="java.lang.Integer">
+            <column name="role" not-null="true" />
+        </property>
+        
+        <property name="enabled" type="boolean">
+            <column name="enabled" not-null="true" />
+        </property>
+        
+        <property name="accountNonExpired" type="boolean">
+            <column name="accountNonExpired" not-null="true" />
+        </property>
+        
+        <property name="accountNonLocked" type="boolean">
+            <column name="accountNonLocked" not-null="true" />
+        </property>
+        
+        <property name="credentialsNonExpired" type="boolean">
+            <column name="credentialsNonExpired" not-null="true" />
+        </property>
+        
+    </class>
+
+</hibernate-mapping>

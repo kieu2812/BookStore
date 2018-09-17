@@ -1,0 +1,13 @@
+<Context>  
+	<Resource name="jdbc/springDataSource" auth="Container" type="javax.sql.DataSource"
+               maxActive="10" maxIdle="5" maxWait="10000" removeAbandoned="true"
+               removeAbandonedTimeout="60" logAbandoned="true"
+               timeBetweenEvictionRunsMillis="5000"
+               username="kieu2"
+               password="password"
+               driverClassName="oracle.jdbc.OracleDriver"
+               url="jdbc:oracle:thin:@localhost:1521:Orcl"
+               />      
+     
+                                       
+</Context>

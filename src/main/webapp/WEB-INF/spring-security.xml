@@ -1,0 +1,45 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"  
+    xmlns:beans="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans.xsd  
+    http://www.springframework.org/schema/security  
+    http://www.springframework.org/schema/security/spring-security.xsd">  
+    
+    <http auto-config="true">  
+    
+        <intercept-url pattern="/admin/*" access="hasRole('ROLE_ADMIN')" />  
+        <intercept-url pattern="/customer/showMyOrder" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/showChangePass" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')" />
+        
+        
+        <!-- access denied page -->
+		<access-denied-handler error-page="/403" />
+		<form-login login-page="/login" default-target-url="/welcome"
+			authentication-failure-url="/login?error" 
+			username-parameter="username"
+			password-parameter="password" 
+			authentication-success-handler-ref="myAuthenticationSuccessHandler"/>
+		<logout logout-success-url="/login?logout" />
+		<!-- enable csrf protection -->
+		<csrf disabled="true"/>
+    </http>  
+    
+    <beans:bean id="myAuthenticationSuccessHandler" class="com.perscholas.auth.MySimpleUrlAuthenticationSuccessHandler" />
+    
+    <beans:bean id="customUserDetailsService" class="com.perscholas.auth.CustomUserDetailsService"/>
+		
+	<beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+		<beans:constructor-arg name="strength" value="10" />
+	</beans:bean>
+	
+	<beans:bean id="authenticationProvider" class="com.perscholas.auth.LimitLoginAuthenticationProvider">
+		<beans:property name="userDetailsService" ref="customUserDetailsService" />
+		<beans:property name="passwordEncoder" ref="encoder" />		
+	</beans:bean>
+ 
+	<authentication-manager>
+		<authentication-provider ref="authenticationProvider"/>
+	</authentication-manager>	 
+	
+</beans:beans>
