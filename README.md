@@ -25,6 +25,7 @@ The input forms are validated using Spring Validation and DAOs/Services are test
 -----------------------------------------------------------------------------------------------
 
 In order to import this project onto your development, you need: 
+
 	Download the application codes from this Git-hub.
 	Use the latest Eclipse as preferred to create Maven Spring web project, JDK 1.8
 	Import/copy all java codes and xml files onto your new project. Update pom file.
@@ -37,6 +38,7 @@ In order to import this project onto your development, you need:
 	
 	
 In order to run this application on you own servers, you need:
+
 	Update connection info in context.xml under META-INF that will be used by server to create connection pool.
 	Update application.properties file to include your image path.
 	Generate a WAR file using Maven and deploy onto Tomcat server webapps folder. 
