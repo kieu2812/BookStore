@@ -9,6 +9,7 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.perscholas.dao.AbstractDAO;
@@ -17,6 +18,7 @@ import com.perscholas.model.CustomerCard;
 
 @Service
 public class CustomerCardService extends AbstractDAO implements CustomerCardDAO {
+	static Logger log = Logger.getLogger(PublisherService.class);
 
 	@Override
 	public List<CustomerCard> getAllCards() {
@@ -28,7 +30,7 @@ public class CustomerCardService extends AbstractDAO implements CustomerCardDAO 
 			super.getConnection();
 			ps = conn.prepareStatement(SQL.GET_ALL_CARDS.getQuery());
 			rs = ps.executeQuery();
-			cards = new ArrayList<CustomerCard>();
+			cards = new ArrayList<>();
 			while (rs.next()) {
 				CustomerCard tempCard = new CustomerCard();
 				// CARDID, CARDNUMBER, HOLDERNAME, EXPIREDATE, SECURITYCODE, CUSTOMERID
@@ -43,7 +45,7 @@ public class CustomerCardService extends AbstractDAO implements CustomerCardDAO 
 				cards.add(tempCard);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(String.format("Error at getAllCards %s" , e.getMessage()));
 		} finally {
 			try {
 				if (rs != null)
@@ -52,8 +54,8 @@ public class CustomerCardService extends AbstractDAO implements CustomerCardDAO 
 					ps.close();
 
 			} catch (SQLException e) {
-				System.err.println("A error occurs when attempt close resources!!!");
-				e.printStackTrace();
+				log.error(String.format("Error at getAllCards %s" , e.getMessage()));
+
 			}
 
 			super.closeConnection();
@@ -74,7 +76,7 @@ public class CustomerCardService extends AbstractDAO implements CustomerCardDAO 
 			ps.setInt(1, custid);
 
 			rs = ps.executeQuery();
-			cards = new ArrayList<CustomerCard>();
+			cards = new ArrayList<>();
 			while (rs.next()) {
 				CustomerCard tempCard = new CustomerCard();
 				// CARDID, CARDNUMBER, HOLDERNAME, EXPIREDATE, SECURITYCODE, CUSTOMERID
@@ -90,7 +92,7 @@ public class CustomerCardService extends AbstractDAO implements CustomerCardDAO 
 				cards.add(tempCard);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(String.format("Error at getCardsByCustId %s" , e.getMessage()));
 		} finally {
 			try {
 				if (rs != null)
@@ -99,8 +101,8 @@ public class CustomerCardService extends AbstractDAO implements CustomerCardDAO 
 					ps.close();
 
 			} catch (SQLException e) {
-				System.err.println("A error occurs when attempt close resources!!!");
-				e.printStackTrace();
+				log.error(String.format("Error at getCardsByCustId %s" , e.getMessage()));
+
 			}
 
 			super.closeConnection();
@@ -134,7 +136,8 @@ public class CustomerCardService extends AbstractDAO implements CustomerCardDAO 
 				card.setExpireYear(rs.getInt("expireYear"));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(String.format("Error at getCartByCardId %s" , e.getMessage()));
+
 		} finally {
 			try {
 				if (rs != null)
@@ -143,8 +146,8 @@ public class CustomerCardService extends AbstractDAO implements CustomerCardDAO 
 					ps.close();
 
 			} catch (SQLException e) {
-				System.err.println("A error occurs when attempt close resources!!!");
-				e.printStackTrace();
+				log.error(String.format("Error at getCartByCardId %s" , e.getMessage()));
+
 			}
 
 			super.closeConnection();
@@ -154,15 +157,13 @@ public class CustomerCardService extends AbstractDAO implements CustomerCardDAO 
 	}
 
 	@Override
-	public int insertCard(CustomerCard cust) {
-	//	CustomerCard card = null;
+	public int insertCard(CustomerCard cust) throws SQLException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int keyGenerated = 0;
 
 		try {
 			super.getConnection();
-		//	ps = conn.prepareStatement(SQL.INSERT_CARD.getQuery(), Statement.RETURN_GENERATED_KEYS);
 			ps = conn.prepareStatement(SQL.INSERT_CARD.getQuery(), new String[] {"CARDID"});
 			// CARDNUMBER, HOLDERNAME, EXPIREDATE, SECURITYCODE, CUSTOMERID
 			ps.setString(1, cust.getCardNumber());
@@ -176,22 +177,14 @@ public class CustomerCardService extends AbstractDAO implements CustomerCardDAO 
 			if (rs.next()) {
 				keyGenerated = rs.getInt(1);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		
 		} finally {
-			try {
+			
 				if (rs != null)
 					rs.close();
 				if (ps != null)
 					ps.close();
-
-			} catch (SQLException e) {
-				System.err.println("A error occurs when attempt close resources!!!");
-				e.printStackTrace();
-			}
-
-			super.closeConnection();
-		}
+	}
 		return keyGenerated;
 
 	}
@@ -216,15 +209,16 @@ public class CustomerCardService extends AbstractDAO implements CustomerCardDAO 
 			isUpdated = ps.executeUpdate() > 0 ? true : false;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(String.format("Error at updateCard %s" , e.getMessage()));
+
 		} finally {
 			try {
 				if (ps != null)
 					ps.close();
 
 			} catch (SQLException e) {
-				System.err.println("A error occurs when attempt close resources!!!");
-				e.printStackTrace();
+				log.error(String.format("Error at updateCard %s" , e.getMessage()));
+
 			}
 
 			super.closeConnection();
@@ -249,15 +243,16 @@ public class CustomerCardService extends AbstractDAO implements CustomerCardDAO 
 			isDeleted = ps.executeUpdate() > 0 ? true : false;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(String.format("Error at deleteCard %s" , e.getMessage()));
+
 		} finally {
 			try {
 				if (ps != null)
 					ps.close();
 
 			} catch (SQLException e) {
-				System.err.println("A error occurs when attempt close resources!!!");
-				e.printStackTrace();
+				log.error(String.format("Error at deleteCard %s" , e.getMessage()));
+
 			}
 
 			super.closeConnection();
@@ -296,7 +291,8 @@ public class CustomerCardService extends AbstractDAO implements CustomerCardDAO 
 				card.setExpireYear(rs.getInt("expireYear"));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(String.format("Error at findCard %s" , e.getMessage()));
+
 		} finally {
 			try {
 				if (rs != null)
@@ -305,8 +301,8 @@ public class CustomerCardService extends AbstractDAO implements CustomerCardDAO 
 					ps.close();
 
 			} catch (SQLException e) {
-				System.err.println("A error occurs when attempt close resources!!!");
-				e.printStackTrace();
+				log.error(String.format("Error at findCard %s" , e.getMessage()));
+
 			}
 
 			super.closeConnection();

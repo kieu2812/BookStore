@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -47,7 +48,6 @@ import com.perscholas.dao.UserRoleDAO;
 import com.perscholas.exception.OutOfStockException;
 import com.perscholas.model.BookDetailInfo;
 import com.perscholas.model.BookInfo;
-import com.perscholas.model.Category;
 import com.perscholas.model.ContactUs;
 import com.perscholas.model.Customer;
 import com.perscholas.model.CustomerCard;
@@ -131,10 +131,6 @@ public class HomeController {
 		return mav;
 	}
 
-	@GetMapping("/test")
-	public ModelAndView loadImage() {
-		return new ModelAndView("index");
-	}
 
 	// *************************LOGIN SPRING SECURITY**********************
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -200,29 +196,7 @@ public class HomeController {
 
 	}
 
-	/*// for 403 access denied page
-	@RequestMapping(value = "/403", method = RequestMethod.POST)
-	public ModelAndView accesssDenied_2() {
 
-		log.debug("URL 403 gets called for POST");
-
-		ModelAndView model = new ModelAndView();
-
-		// check if user is login
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (!(auth instanceof AnonymousAuthenticationToken)) {
-			UserDetails userDetail = (UserDetails) auth.getPrincipal();
-			log.info(userDetail);
-			model.addObject("username", userDetail.getUsername());
-		}
-
-		log.debug("Forward to Page 403 for POST");
-
-		model.setViewName("403");
-		return model;
-
-	}
-*/
 	/**** Book Controller *****/
 	@GetMapping("/book/list")
 	public ModelAndView getBooks(@RequestParam(value = "page", defaultValue = "1") int page) {
@@ -332,7 +306,8 @@ public class HomeController {
 		ShoppingCartIem item = null;
 		if (!cartItems.isEmpty() && cartItems.containsKey(bookId)) {
 			item = cartItems.get(bookId);
-			item.setQuantity(item.getQuantity() + 1);
+			if(bookInfoDAO.getByBookId(bookId).getQtyInStock()>=item.getQuantity()+1)
+				item.setQuantity(item.getQuantity() + 1);
 
 		} else {
 			item = new ShoppingCartIem();
@@ -500,7 +475,7 @@ public class HomeController {
 			@RequestParam(value = "cbtheSame", required = false) String checkbox, BindingResult results, Model mav) {
 
 		if (results.hasErrors()) {
-			log.info("Error when validator shipping address when attempt call URL:/billingAddress");
+			log.error("Error when validator shipping address when attempt call URL:/billingAddress");
 			return "showShippingAddress";
 		}
 		ShoppingCart myCart = ShoppingCartService.getCart(request);
@@ -522,6 +497,8 @@ public class HomeController {
 		} else {
 			// shipping id default=0 for the same address
 			shipping.setId(0);
+			shipping.setAddress(cust.getAddress());
+			
 		}
 
 		// 2. store shipping address to session object
@@ -543,7 +520,7 @@ public class HomeController {
 		/*		 3.2 if customer don't have any card to check out. Enter information about visa card for payment
 		*/
 	if ( listCard.isEmpty()) {
-			log.info("customer don't have any card to check out. Enter information about visa card");
+			log.error("customer don't have any card to check out. Enter information about visa card");
 			mav.addAttribute("customerCard", new CustomerCard());
 			mav.addAttribute("errors",
 					"Hi " + cust.getFirstName() + ", you don't have any card for payment. Please fill it to continue!");
@@ -578,23 +555,27 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/cart/saveOrder", method = RequestMethod.POST)
-	public String saveOrders(HttpServletRequest request, Model mav) {
+	public String saveOrders(HttpServletRequest request, Model model) {
 		log.info("LOG FOR URL /cart/saveOrder:");
 		ShoppingCart myCart = ShoppingCartService.getCart(request);
+		
 		// save orders
+		int orderId=0;
 		try {
-			orderManagerDAO.saveOrders(myCart);
+			orderId= orderManagerDAO.saveOrders(myCart);
 		} catch (OutOfStockException | SQLException e) {
-			mav.addAttribute("errors", e.getMessage());
+			model.addAttribute("errors", e.getMessage());
 			log.error("Error at saveOrders "+e.getMessage());
+			
 			return "showShoppingCart";
 		}
 		// 2. remove shopping cart in your session
 		ShoppingCartService.removeCart(request);
-
-		mav.addAttribute("custId", Utils.getCustIdFromSession(request));
-		mav.addAttribute("message", "Thank your for your order. Your order is successfull");
-		return "orderDetail";
+		
+	//	model.addAttribute("custId", Utils.getCustIdFromSession(request));
+		model.addAttribute("message", "Thank your for your order. Your order is successfull. Here is detail your order");
+		
+		return "success";
 
 	}
 

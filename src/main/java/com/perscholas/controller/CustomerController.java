@@ -99,12 +99,12 @@ public class CustomerController {
 		return mav;
 	}
 	 @RequestMapping(value = "/customer/registerProcess", method = RequestMethod.POST)
-	public String registerCustomer(@ModelAttribute("customerForm") @Validated CustomerForm custForm
+	public String registerCustomer(@ModelAttribute("customerForm") CustomerForm custForm
 			, BindingResult results, Model model
 			) {
 		log.info("URL /customer/registerProcess is call" );
 		
-
+		customerValidator.validate(custForm, results);
 		
 		if(results.hasErrors()) {			
 			log.info("Error in binding data");
@@ -183,8 +183,8 @@ public class CustomerController {
 
 			if (orderInfos != null && orderInfos.isEmpty()) {
 				message = "Don't find any order in the our store";
-				model.addAttribute("errors", message);
-				return "welcome";
+				model.addAttribute("message", message);
+				return "fail";
 			}
 			log.info("Message==============>" + message);
 			result= new PaginationResult<>(orderInfos, page, MAX_RESULT, MAX_NAVIGATION_PAGE);
@@ -224,8 +224,10 @@ public class CustomerController {
 		 review.setBookid(bookid);
 		 review.setCreateDate(Date.valueOf(LocalDate.now()));
 		 review.setPosterid((Integer)Utils.getCustIdFromSession(request));
+		 review.setRating(rating);
 		 log.info(review);
 		 reviewDAO.insertReview(review);
+		 
 		 model.addAttribute("bookId", bookid);
 		 
 		 return "redirect:/book/getBook";

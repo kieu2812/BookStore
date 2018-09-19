@@ -13,6 +13,28 @@
 	 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">  
      <link  href="<c:url value='/resources/css/main.css' />"  rel="stylesheet"/>
 </head>
+<script type="text/javascript">
+	function validateData(form){
+		var month = form.expireMonth;
+		var year = form.expireYear;
+		var date = new Date();
+		//get last date in the expire month and year.
+		var lastExpireDate = new Date(year.value, month.value, 0);
+		//get last date in current month and year 
+		var lastCurrentDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+	
+
+		var error= document.getElementById("error");
+		if(lastExpireDate<lastCurrentDay){
+			
+			error.innerHTML="Expire Date must be greater than current date. This card is expired.";
+			return false;
+		}
+		return true;
+	}
+	
+</script>
+
 
 <body>
 	
@@ -31,8 +53,11 @@
 			<div class="errorMessage">${ errors }</div>
 
 		</c:if>
+		<div class="errorMessage" >
+			<span id="error"></span>
+		</div>
 			<div class="panel-body" style="width:80%; margin: 0 auto;">
-				<form:form action="${pageContext.request.contextPath}/card/addCardProcess"  modelAttribute="customerCard"
+				<form:form id="formCustomerCard" action="${pageContext.request.contextPath}/card/addCardProcess"  modelAttribute="customerCard" onsubmit="return validateData(this);"
 						method="POST">
 				 <div class="form-group row">
 						<div class="col-sm-3">
@@ -82,15 +107,14 @@
 						</div>
 					</div>
 					 <div class="form-group  row">
-                            	<div class="col-sm-3">
+                            <div class="col-sm-3">
                                 <form:label path="securityCode">Security Code</form:label>
-                                </div>
-                                <div class="col-sm-9">                                
+                            </div>
+                            <div class="col-sm-9">                                
                                 <form:input class="form-control" required="true"  pattern="[0-9]{3,6}" path="securityCode" />
                                 <form:errors path="securityCode"  class="errorMessage"/>       
                             </div>           		
-                            </div>
-						
+                     </div>
 						
 					<div class="form-group row">	
 					<div class="col-sm-6">

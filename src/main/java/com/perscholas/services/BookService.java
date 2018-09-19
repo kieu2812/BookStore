@@ -191,6 +191,56 @@ public class BookService extends AbstractDAO implements BookDAO{
 	}
 
 	@Override
+	public Book getBookByIdUseInTransaction(int bookId) {
+		PreparedStatement ps= null;
+		ResultSet rs =null;
+		Book book= null;
+		try {
+			super.getConnection();
+			ps= conn.prepareStatement(SQL.GET_BOOK_BY_ID.getQuery());
+			/*
+			 * GET_BOOK_BY_NAME("SELECT ID, NAME, HARDCOVERPATH, ISBN_10, ISBN_13, PUBLISHERID, CATEGORYID, DESCRIPTION, PAGE, QTYINSTOCK FROM BOOK WHERE NAME=? ");
+			*/ 
+			ps.setInt(1, bookId);
+			rs =ps.executeQuery();
+			if(rs.next()) {
+				book= new Book();
+				book.setId(rs.getInt(1));
+				book.setName(rs.getString(2));
+				book.setHardCoverPath(rs.getString(3));
+				book.setISBN_10(rs.getString(4));
+				book.setISBN_13(rs.getString(5));
+				book.setPublisherId(rs.getInt(6));
+				book.setCategoryId(rs.getInt(7));
+				book.setDescription(rs.getString(8));
+				book.setPages(rs.getInt(9));
+				book.setQtyInStock(rs.getInt(10));
+				book.setPrice(rs.getDouble(11));
+
+			}
+
+			
+		} catch (SQLException e) {
+			log.error("A error occurs when attempt getBookById");
+			log.error(e.getMessage());
+		}finally {
+			try {
+				if(rs!=null)	rs.close();
+				if(ps!=null)	ps.close();
+				
+			}catch(SQLException e) {
+				log.error("A error occurs when attempt close resources!!!");
+				log.error(e.getMessage());
+			}
+			
+			//super.closeConnection();
+		}
+		
+		
+		return book;
+
+	}
+
 	public Book getBookById(int bookId) {
 		PreparedStatement ps= null;
 		ResultSet rs =null;
@@ -233,7 +283,7 @@ public class BookService extends AbstractDAO implements BookDAO{
 				log.error(e.getMessage());
 			}
 			
-			super.closeConnection();
+			//super.closeConnection();
 		}
 		
 		

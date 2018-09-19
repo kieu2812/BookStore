@@ -33,4 +33,5 @@ public interface BookDAO {
 	public Book getBookByName(String name);
 	public Book getBookById(int bookId);
 	public Book getBookByIsbn13(String isbn13);
+	public Book getBookByIdUseInTransaction(int bookId);
 }

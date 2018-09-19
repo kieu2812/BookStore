@@ -10,7 +10,7 @@ public interface OrderDetailDAO {
 
 	enum SQL{
 		INSERT_ORDER_DETAIL("INSERT INTO ORDER_DETAIL( ORDERID, BOOKID, QUANTITY,UNIT_PRICE, SHIPPING_DATE, EXPECT_ARRIVE) " + 
-				" VALUES(?,?,?,?,?,?)"),
+				" VALUES(?,?,?,?,trunc(sysdate), trunc(sysdate+3) )"),
 		GET_ALL_ORDER_DETAIL_BY_ORDERID("SELECT ID, ORDERID, BOOKID, QUANTITY, UNIT_PRICE, SHIPPING_DATE, EXPECT_ARRIVE FROM ORDER_DETAIL WHERE ORDERID= ?");
 		private final String query;
 		private SQL(String s){

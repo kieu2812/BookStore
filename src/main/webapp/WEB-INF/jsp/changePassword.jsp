@@ -25,21 +25,40 @@
 	<title>Change password</title>
 <script type="text/javascript">
 		function validateForm(regForm){
-			event.preventDefault();
-			var err= document.getElementById("errorsMessage");
-			console.log("validateForm() is call");
-			if(document.getElementById("newPass").value!= document.getElementById("confirmPass").value){
-				err.style.display="block";
-				err.value="Password and confirm password doesn't match";
-				document.getElementById("confirmErr").textContent="Password and confirm password doesn't match"
-				console.log("Password and confirm password doesn't match");
-				//alert("Password and confirm password doesn't match");		
+			
+			var list =  document.getElementsByTagName("SPAN");
+			console.log("Length = "+ list.length);
+			for(var i=0;i< list.length;i++){
+				list[i].innerHTML="";
+			}
+			var oldPass= document.getElementById("password");
+			var newPass =document.getElementById("newPass");
+			var confirmPass= document.getElementById("confirmPass");	
+			if(oldPass.value== newPass.value){
+				document.getElementById("confirmPass").value="Old Password and new password must be different";
+
+				
+			}
+			
+			
+			if(newPass.value!= confirmPass.value){
+
+				
+				document.getElementById("confirmErr").innerHTML="Password and confirm password doesn't match"
+
 				return false;
 			}
 			
 			return true;
 		}
 		function resetForm(){
+			var list =  document.getElementsByTagName("SPAN");
+			console.log("Length = "+ list.length);
+			for(var i=0;i< list.length;i++){
+				list[i].innerHTML="";
+			}
+			
+			
 			document.getElementById("userName").value="";
 			document.getElementById("password").value="";
 			document.getElementById("newPass").value="";
@@ -51,8 +70,8 @@
 	<jsp:include page="header.jsp"></jsp:include>
 	<div class="container">
 		<div id="login-box">
-			<form:form name='changePassForm' modelAttribute="userChange"
-			action="${pageContext.request.contextPath}/changePass" method='POST'>
+			<form:form id='changePassForm' modelAttribute="userChange"
+			action="${pageContext.request.contextPath}/changePass" method='POST' onsubmit="return validateForm(this);">
 	
 				<div class="titleForm"> Change Password</div>
      			<c:if test="${not empty errors }">
@@ -66,31 +85,38 @@
                      
                      <div class="col-sm-8">
                      
-                    	 <form:input type="email" path="userName"  class="form-control form-control-warning"  placeholder="name@example.com"/>
+                    	 <form:input type="email" path="userName"  class="form-control form-control-warning"   required="true" placeholder="name@example.com"/>
                     	 <form:errors path="userName" class="errorMessage"/>
                  	</div>
                  </div>
                  <div class="form-group row has-warning">
                      <label for="inputHorizontalWarning" class="col-sm-4 col-form-label"  >Old Password</label> 
                      <div class="col-sm-8">
-                     	<form:input type="password" path="password"  class="form-control form-control-warning" maxlength="15"  />
+                     	<form:input type="password" path="password"  class="form-control form-control-warning"   required="true" pattern="[0-9A-Za-z]{6,15}"
+                     		title="Password must be between 6 and 15. Must include numberic and alphabet !!"
+                     	  />
                      	<form:errors path="password"  class="errorMessage"/>
                      </div>
                  </div>
              	                 <div class="form-group row has-warning">
                      <label for="inputHorizontalWarning" class="col-sm-4 col-form-label"  >New Password</label> 
                      <div class="col-sm-8">
-                     	<form:input type="password"  path="newPass" class="form-control form-control-warning" maxlength="15"  />
+                     	<form:input type="password"  path="newPass" class="form-control form-control-warning"  required="true" pattern="[0-9A-Za-z]{6,15}"  
+                     	                     		title="New Password must be between 6 and 15. Must include numberic and alphabet !!"
+                     	 />
                      	<form:errors path="newPass"  class="errorMessage"/>
                      </div>
                  </div>
              	                 <div class="form-group row has-warning">
                      <label for="inputHorizontalWarning" class="col-sm-4 col-form-label"  >Confirm New Password</label> 
                      <div class="col-sm-8">
-                     	<form:input type="password"  path="confirmPass" class="form-control form-control-warning" maxlength="15"  />
+                     	<form:input type="password"  path="confirmPass" class="form-control form-control-warning"   required="true" pattern="[0-9A-Za-z]{6,15}" 
+                     		                     		title="Confirm Password must be between 6 and 15. Must include numberic and alphabet !!"
+                     		
+                     	 />
                      	<form:errors path="confirmPass"  class="errorMessage"/>
                      </div>
-                     <div id="confirmErr"></div>
+                     <div id="confirmErr" class="errorMessage"></div>
                  </div>
              	
 

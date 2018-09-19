@@ -1,10 +1,9 @@
 package com.perscholas.services;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,36 +73,66 @@ public class OrderDetailService extends AbstractDAO implements OrderDetailDAO{
 	public int insertOrderDetail(OrderDetail orderDetail) throws OutOfStockException, SQLException {
 		
 		PreparedStatement ps= null;
+		//Statement st= null;
 		ResultSet rs =null;
 		int id=0;
 		try {
-			super.getConnection();
-			ps= conn.prepareStatement(SQL.INSERT_ORDER_DETAIL.getQuery(), new String[] {"ID"});
-			/*INSERT INTO ORDER_DETAIL( ORDERID, BOOKID, QUANTITY,UNIT_PRICE, SHIPPING_DATE, EXPECT_ARRIVE)
-			 * */
-			Book bookInStock =  bookDAO.getBookById(orderDetail.getBookid());
+
 			
+			Book bookInStock =  bookDAO.getBookByIdUseInTransaction(orderDetail.getBookid());
+			
+			log.info("Insert Order Detail with bookId = " + orderDetail.getBookid() + "Book In Stock= " + bookInStock);
+			log.info("ORDER DETAIL INFO " + orderDetail);
 			if(bookInStock.getQtyInStock()>=orderDetail.getQuantity()) {
+				log.info("Quantity in stock >= order Quantity. Process insert Order Detail");
+				super.getConnection();
+				ps= conn.prepareStatement(SQL.INSERT_ORDER_DETAIL.getQuery(), new String[] {"ID"});
+				/*INSERT INTO ORDER_DETōAIL( ORDERID, BOOKID, QUANTITY,UNIT_PRICE, SHIPPING_DATE, EXPECT_ARRIVE)
+				 * */
+				
+				String query= "INSERT INTO ORDER_DETAIL( ORDERID, BOOKID, QUANTITY,UNIT_PRICE, SHIPPING_DATE, EXPECT_ARRIVE) " + 
+						" VALUES("+ orderDetail.getOrderId()+","
+						+ orderDetail.getBookid()+"," 
+						+orderDetail.getQuantity() +","
+						+ orderDetail.getUnit_price() +","
+					+" trunc(sysdate), trunc(sysdate+3))";
+
+				
+				log.info("Query= " +query);
+				if(conn!=null) {
+					log.error("Call create statement");
+					//st =  conn.createStatement();
+				}
+				else {
+					log.error("Can't get connection in insertOrderDetail");
+				}
+				log.info("before execute");
+
+				//st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+				log.info("Insert Order Detail with orderid="+ orderDetail.getOrderId() +"bookid= " +orderDetail.getBookid()+ " quantity= "+ orderDetail.getQuantity()+
+						"Unit_price= "+ orderDetail.getUnit_price());
 				ps.setInt(1,  orderDetail.getOrderId());
 				ps.setInt(2, orderDetail.getBookid());
 				ps.setInt(3, orderDetail.getQuantity());
 				ps.setDouble(4, orderDetail.getUnit_price());
-				ps.setDate(5, Date.valueOf(LocalDate.now()));
-				ps.setDate(6, Date.valueOf(LocalDate.now().plusDays(3)));
-				
-				
 				ps.executeUpdate();
 				rs = ps.getGeneratedKeys();
+				//rs= st.getGeneratedKeys();
 				if(rs.next()) {
 					id= rs.getInt(1);
+				}else {
+					log.error("Error at insertOrderDetail because try to execute this query "+ query);
+					throw new SQLException("Some error occurs in insertOrderDetail" );
 				}
+				
 			}else {
+				log.error("Error at insertOrderDetail because Out of stock of book Name=" + bookInStock.getName());
 				throw new OutOfStockException("Out of Stock", bookInStock.getName(), bookInStock.getQtyInStock(), orderDetail.getQuantity());
 			}
 		}finally {
 			if(rs!=null)	rs.close();
 			if(ps!=null)	ps.close();
-			
+			//if(st!=null)	st.close();
 		}
 		return id;	
 	}

@@ -20,7 +20,6 @@
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<div class="container">
-		<c:out value="${custId }"/>
 		<c:if test="${not empty bookDetail}">
 
 			<div class="card">
@@ -82,7 +81,7 @@
 					
 					 		<div>
 							
-								<c:if test="${bookInfo.qtyInStock>0}">
+								<c:if test="${bookDetail.book.qtyInStock>0}">
 									<a class="btn btn-success"	href="<c:url value='/addCart?bookId=${bookDetail.book.id}'/>">AddTo Cart</a>
 								</c:if>
 							
@@ -117,25 +116,22 @@
 						<div class="row">
 							<div class="col-sm-3">Your Rating:</div>
 							<div class="col-sm-9">
-								<!-- 	<div class="rating">
-							<span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span>
-						</div> -->
+							
 								<div>
-									<fieldset class="rating">
-									<input type="radio" name="rating"  value="5" />
-											<label class="full" title="Awesome - 5 stars"></label> 
+									<fieldset >
+									<input type="radio" name="rating"  value="1" /> <label>1</label>
+											
+										 <input type="radio" name="rating"  value="2" />  <label>2</label>
+										 	
+									
+										 <input type="radio" name="rating" value="3" />  <label>3</label>
+										 
+									
+										<input type="radio" name="rating"  value="4" /> <label>4</label>
+										 
+									
+										 <input type="radio" name="rating"  value="5" checked/> <label>5</label>
 										
-										 <input type="radio" name="rating"  value="4" />
-										 		<label class="full" title="Pretty good - 4 stars"></label> 
-									
-										 <input type="radio" name="rating" value="3" />
-										 	<label class="full" title="Meh - 3 stars"></label> 
-									
-										<input type="radio" name="rating"  value="2" />
-										 	<label class="full" title="Kinda bad - 2 stars"></label> 
-									
-										 <input type="radio" name="rating"  value="1" />
-										 	<label class="full"  title="Sucks big time - 1 star"></label> 
 									
 							
 									</fieldset>

@@ -27,6 +27,6 @@ public interface ShippingDetailDAO {
 		
 	}
 	public List<ShippingDetail> getAllByOrderId(int orderId);
-	public boolean insertByOrderId(int orderId);
+	public boolean insertByOrderId(int orderId) throws SQLException;
 	public boolean insertByOrderDetailId(int orderDetailId) throws SQLException;
 }

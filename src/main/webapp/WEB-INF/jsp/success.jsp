@@ -23,10 +23,11 @@
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<div class="container">
-		
-		<c:if test="${ not empty message}">
-			<div class="successMessage"><h3>${message }</h3></div>
-		</c:if>
+		<div class="panel panel-success" style="height:400px;">
+			<c:if test="${ not empty message}">
+				<div class="panel-heading successMessage"><h3>${message }</h3></div>
+			</c:if>
+		</div>
 	</div> <%-- Container --%>		
 	<jsp:include page="footer.jsp"></jsp:include>
 

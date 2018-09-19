@@ -62,7 +62,7 @@ public class ShippingDetailService extends AbstractDAO implements ShippingDetail
 	}
 
 	@Override
-	public boolean insertByOrderId(int orderId) {
+	public boolean insertByOrderId(int orderId) throws SQLException {
 		CallableStatement cs= null;
 		boolean isInsert = false;
 		
@@ -73,9 +73,6 @@ public class ShippingDetailService extends AbstractDAO implements ShippingDetail
 			isInsert = cs.execute();
 			
 			
-		} catch (SQLException e) {
-			log.error(String.format("Error at insertByOrderId %s" , e.getMessage() ));
-
 		}finally {
 			try {
 				
@@ -86,7 +83,7 @@ public class ShippingDetailService extends AbstractDAO implements ShippingDetail
 
 			}
 			
-			super.closeConnection();
+			//super.closeConnection();
 		}
 		
 		

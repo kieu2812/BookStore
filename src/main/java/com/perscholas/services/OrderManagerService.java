@@ -12,6 +12,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import com.perscholas.dao.AbstractDAO;
 import com.perscholas.dao.BookDAO;
+import com.perscholas.dao.CustomerCardDAO;
 import com.perscholas.dao.OrderDetailDAO;
 import com.perscholas.dao.OrderManagerDAO;
 import com.perscholas.dao.OrdersDAO;
@@ -47,9 +48,13 @@ public class OrderManagerService extends AbstractDAO implements OrderManagerDAO 
 	@Autowired
 	ShippingAddressDAO shippingAddressDAO;
 	
+	@Autowired
+	CustomerCardDAO customerCardDAO;
+	
+	@SuppressWarnings("unused")
 	@Override
-	@Transactional(rollbackFor= {OutOfStockException.class, SQLException.class})
-	public boolean saveOrders(ShoppingCart cart) throws OutOfStockException, SQLException   {
+	@Transactional(rollbackFor= {OutOfStockException.class, SQLException.class, Exception.class})
+	public int saveOrders(ShoppingCart cart) throws OutOfStockException, SQLException   {
 		
 		log.info("Transaction is active? " + TransactionSynchronizationManager.isActualTransactionActive());
 		
@@ -61,10 +66,7 @@ public class OrderManagerService extends AbstractDAO implements OrderManagerDAO 
 		order.setCustomerId(cart.getCustomer().getId());
 		
 		
-		CustomerCard card= cart.getCustomerCard();
-		
-		log.info("Customer card = " + card);
-		order.setCardId(card.getCardId());
+	
 		
 		order.setCreateDate(LocalDate.now());
 	
@@ -83,15 +85,27 @@ public class OrderManagerService extends AbstractDAO implements OrderManagerDAO 
 		} else {
 			log.info("1. Use an existing shipping address");
 		}
+		// 2. insert Customer Card if new card
+
+		CustomerCard customerCard= cart.getCustomerCard();
+		Integer cardId= customerCard.getCardId();
+		if(cardId==null || cardId==0) {
+			cardId = customerCardDAO.insertCard(customerCard);
+			
+		}
+		log.info("2. Customer card id = " + cardId );		
+
+		order.setCardId(cardId);
 	
-		// 2.insert orders to order table in database
-		log.info("2.insert orders");
+		// 3.insert orders to order table in database
+		log.info("3.insert orders");
 		int orderId = orderDAO.insertOrder(order);
 		log.info("Order Id= " +orderId);
 	
 		Map<Integer, ShoppingCartIem> cartItems = cart.getCartItems();
-		//3. insert order detail
-		log.info("3.insert Order Details and shipping Details");
+		
+		//4. insert order detail
+		log.info("4.insert Order Details");
 		for(Integer bookId: cartItems.keySet()) {
 			
 			ShoppingCartIem cartItem = cartItems.get(bookId);
@@ -110,15 +124,15 @@ public class OrderManagerService extends AbstractDAO implements OrderManagerDAO 
 			orderDetailId = orderDetailDao.insertOrderDetail(od);
 			log.info("Insert Order Detail with orderDetailId = " + orderDetailId);
 			
-			//4. insert shipping detail get from inventory item available and update inventory table
-			log.info("Insert Shipping Detail");
-			isSuccess= shipDetailDAO.insertByOrderDetailId(orderDetailId);
-			log.info("insert Shipping_detail from orderId is success ? "+ isSuccess);
+			
 
 		}
-			
+		//5. insert shipping detail get from inventory item available and update inventory table
+		log.info("5.Insert Shipping Detail");
+		isSuccess= shipDetailDAO.insertByOrderId(orderId);
+		log.info("insert Shipping_detail from orderId is success ? "+ isSuccess);
 		isSuccess=true;
-		return isSuccess;
+		return orderId;
 	}
 
 }

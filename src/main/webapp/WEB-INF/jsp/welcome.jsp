@@ -35,7 +35,7 @@
                    <form:form action="book/searchBook" method="POST">
                    			
 	                   		<div class="col-sm-10">
-	                   			<input id="searchWord" type="text" class="form-control"  name="searchWord" placeholder="Enter book titile or category"/>	
+	                   			<input id="searchWord" type="text" class="form-control"  name="searchWord" placeholder="Enter book titile or category or ISBN"/>	
 							</div>
 							<div class="col-sm-2">
 								<input class="btn btn-primary" type="submit" value="Search"/>

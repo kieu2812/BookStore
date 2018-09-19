@@ -39,6 +39,9 @@ input {
 			<div>${ errors }</div>
 
 		</c:if>
+		<c:if test ="${not empty message }">
+			<div class="panel-warning">${message }</div>
+		</c:if>
 			<!-- modelAttribute="myCart"> -->
 
 			<%-- CUSTOMER INFORMATION ADDRESS --%>

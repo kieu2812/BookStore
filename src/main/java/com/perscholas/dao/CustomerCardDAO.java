@@ -1,5 +1,6 @@
 package com.perscholas.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.perscholas.model.CustomerCard;
@@ -30,7 +31,7 @@ public interface CustomerCardDAO {
 	public CustomerCard getCartByCardId(int cardId);
 	public CustomerCard findCard(String cardNumber, int securityCode,int expireMonth, int exprieYear);
 
-	public int insertCard(CustomerCard cust);
+	public int insertCard(CustomerCard cust) throws SQLException;
 	public boolean updateCard(CustomerCard cust);
 	public boolean deleteCard(int cardId);
 }

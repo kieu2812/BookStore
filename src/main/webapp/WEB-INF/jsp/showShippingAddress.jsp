@@ -25,14 +25,8 @@
 	%>
 <script>
 	function validatorForm(form){
-		//event.preventDefault();
 		console.log("ValidateorForm is call")
-/* 		var checkbox= document.getElementById("cbtheSame");
-		var address = document.getElementById("address");
-		var city = document.getElementById("city");
-		var zipcode= document.getElementById("zipcode");
-		var state =  document.getElementById("state"); 
-*/
+
 		var checkbox= form.cbtheSame;
 		var address = form.address;
 		var city = form.city;
@@ -64,10 +58,10 @@
 			address.value="";
 			city.value="";
 			zipcode.value="";
-			address.disabled = false;
-			city.disabled = false;
-			zipcode.disabled = false;
-			state.disabled = false;
+			address.readOnly  = false;
+			city.readOnly  = false;
+			zipcode.readOnly  = false;
+			state.readOnly  = false;
 			address.focus();
 			return;
 			
@@ -77,10 +71,11 @@
 			  city.value= "<%= spadd.getCity()%>";
 			  zipcode.value= "<%= spadd.getZipcode()%>";
 			  state.value= "<%= spadd.getState()%>";
-			  address.disabled = true;
-			  city.disabled = true;
-			  zipcode.disabled = true;
-			  state.disabled = true;
+			  state.readOnly =true;
+			  address.readOnly  = true;
+			  city.readOnly  = true;
+			  zipcode.readOnly  = true;
+			  state.readOnly  = true;
 		  }
 	}
 	
@@ -121,13 +116,13 @@
 								<input type="checkbox" name="cbtheSame" id="cbtheSame" checked value="checked" onchange="doResetForm(cbtheSame)"/>The same customer address
                        		 <div class="form-group">
 									<form:label path="address">Address</form:label>
-									<form:input class="form-control" required="true" path="address" disabled="true"
+									<form:input class="form-control" required="true" path="address" readOnly ="true"
 										/>
 								</div>
 
 								<div class="form-group">
 									<form:label path="city">City</form:label>
-									<form:input class="form-control" required="true" path="city" disabled="true"
+									<form:input class="form-control" required="true" path="city" readOnly ="true"
 									/>
 
 								</div>
@@ -135,13 +130,13 @@
 								<div class="form-group">
 									<form:label path="state">State</form:label>
 									
-									<form:select path="state" required="true"  items="${states}" disabled="true" class="form-control" >							
+									<form:select path="state" required="true" readOnly ="true" items="${states}" class="form-control" >							
 									</form:select>
 								</div>
 
 								<div class="form-group">
 									<form:label path="zipcode">Zip Code</form:label>
-									<form:input class="form-control" required="true" maxlength="7" disabled="true"
+									<form:input class="form-control" required="true" maxlength="7" readOnly="true"
 										type="text"
 										onkeypress='return event.charCode >= 48 && event.charCode <= 57'
 										path="zipcode" />

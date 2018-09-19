@@ -36,7 +36,7 @@ public class CustomerCard {
 	private int customerId;
 	public CustomerCard() {
 		super();
-		// 
+	
 	}
 	
 	

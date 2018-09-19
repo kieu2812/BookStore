@@ -10,5 +10,5 @@ import com.perscholas.model.ShoppingCart;
 @Transactional
 public interface OrderManagerDAO  {
 
-	public boolean saveOrders(ShoppingCart carts) throws OutOfStockException, SQLException;
+	public int saveOrders(ShoppingCart carts) throws OutOfStockException, SQLException;
 }

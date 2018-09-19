@@ -53,12 +53,14 @@
     	<property name="mailSender" ref="mailSender" />  
 	</bean>  
           
-     <!-- Send Email Exception Resolver i.e. In Case Of Exception The Controller Will Navigate To 'error.jsp' & Will Display The Exception Message -->
+<!--      Send Email Exception Resolver i.e. In Case Of Exception The Controller Will Navigate To 'fail.jsp' & Will Display The Exception Message
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="exceptionMappings">
 			<props>
-				<prop key="java.lang.Exception">error</prop>
+				<prop key="java.lang.Exception">fail</prop>
 			</props>
+			
 		</property>
-	</bean>	
+		<property name = "defaultErrorView" value = "error"/>
+	</bean>	 -->
 </beans>

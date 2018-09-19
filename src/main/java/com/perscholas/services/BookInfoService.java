@@ -143,8 +143,8 @@ public class BookInfoService  extends AbstractDAO implements BookInfoDAO{
 				AND (B.DELETEFLAG is null or B.DELETEFLAG!=1 ) ";
 			*/
 			
-			ps.setString(1, "%"+ keyword.toUpperCase() +"%");
-			ps.setString(2, "%"+ keyword.toUpperCase() +"%");
+			ps.setString(1, "%"+ keyword.toUpperCase().trim() +"%");
+			ps.setString(2, "%"+ keyword.toUpperCase().trim() +"%");
 			ps.setString(3, keyword.trim());
 			ps.setString(4, keyword.trim());
 			

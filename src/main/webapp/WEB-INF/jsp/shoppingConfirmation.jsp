@@ -78,8 +78,12 @@ input {
 						
 						<div class="panel-body">
 							<div class="row">
-								<div class="col-sm-4">4 Last Digit:</div>
-								<div class="col-sm-6">${myCart.customerCard.get4LastDigits() } </div>
+								<div class="col-sm-4">Card Number </div>
+								<div class="col-sm-6">*****${myCart.customerCard.get4LastDigits() } </div>
+							</div>
+							<div class="row">
+								<div class="col-sm-4">Expire date:</div>
+								<div class="col-sm-6">${myCart.customerCard.expireMonth} / ${myCart.customerCard.expireYear}</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-4">Card Holder:</div>

@@ -33,6 +33,7 @@ public class CustomerCardValidator implements Validator {
 	@Override
 	public void validate(Object obj, Errors errors) {
 		
+		log.info("VALIDATE CUSTOMER CARD IS CALLED");
 		CustomerCard card= (CustomerCard) obj;
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cardNumber", "cardForm.cardNumber.empty");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "holderName", "cardForm.holderName.empty");
