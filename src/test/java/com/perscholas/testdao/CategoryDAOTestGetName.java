@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import com.perscholas.dao.CategoryDAO;
 import com.perscholas.model.Category;
 
-@ContextConfiguration(locations="classpath:application-context-test.xml")
+@ContextConfiguration(locations="/application-context-test.xml")
 @RunWith(Parameterized.class)
 public class CategoryDAOTestGetName {
 	
