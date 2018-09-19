@@ -34,7 +34,7 @@ public interface BookInfoDAO {
 				"        FROM REVIEW R  " + 
 				"        GROUP BY BOOKID  " + 
 				"    ) R ON R.BOOKID = B.ID " + 			
-				"WHERE ( trim(UPPER(B.NAME)) LIKE ? OR trim(UPPER(C.NAME))  LIKE ?  OR B.ISBN_10=? OR B.ISBN_13=?) AND (B.DELETEFLAG is null or B.DELETEFLAG!=1 ) "),
+				"WHERE ( trim(UPPER(B.NAME)) LIKE ? OR trim(UPPER(C.NAME))  LIKE ?  OR TRIM(B.ISBN_10) LIKE ? OR TRIM(B.ISBN_13) LIKE ?) AND (B.DELETEFLAG is null or B.DELETEFLAG!=1 ) "),
 		GET_BOOK_BY_CATEGORY_ID("SELECT B.ID, B.NAME, HARDCOVERPATH, PRICE, QTYINSTOCK, " + 
 				"         NVL(R.AVGRATING,0),NVL(TOTALREVIEW,0)     " + 
 				"From BOOK B  " + 

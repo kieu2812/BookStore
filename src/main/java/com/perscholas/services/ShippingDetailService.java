@@ -83,7 +83,7 @@ public class ShippingDetailService extends AbstractDAO implements ShippingDetail
 
 			}
 			
-			super.closeConnection();
+			//super.closeConnection();
 		}
 		
 		

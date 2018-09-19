@@ -81,6 +81,7 @@
 								</c:if>
 							
 							</div>
+							<br/>
 							<sec:authorize access="hasRole('ROLE_ADMIN')">
 								<div>
 									<div>

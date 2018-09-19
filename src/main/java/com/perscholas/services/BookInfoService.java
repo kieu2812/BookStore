@@ -139,14 +139,14 @@ public class BookInfoService  extends AbstractDAO implements BookInfoDAO{
 				"        FROM REVIEW R  " + 
 				"        GROUP BY BOOKID  " + 
 				"    ) R ON R.BOOKID = B.ID " + 			
-				"WHERE ( trim(UPPER(B.NAME)) LIKE ? OR trim(UPPER(C.NAME))  LIKE ?  OR B.ISBN_10=? OR B.ISBN_13=?) 
+				"WHERE ( trim(UPPER(B.NAME)) LIKE ? OR trim(UPPER(C.NAME))  LIKE ?  OR trim(upper(B.ISBN_10)) like ? OR trim(B.ISBN_13)  like ?) 
 				AND (B.DELETEFLAG is null or B.DELETEFLAG!=1 ) ";
 			*/
 			
 			ps.setString(1, "%"+ keyword.toUpperCase().trim() +"%");
 			ps.setString(2, "%"+ keyword.toUpperCase().trim() +"%");
-			ps.setString(3, keyword.trim());
-			ps.setString(4, keyword.trim());
+			ps.setString(3, "%" + keyword.trim()+"%");
+			ps.setString(4,"%" + keyword.trim()+"%");
 			
 			rs= ps.executeQuery();
 			while(rs.next()) {
