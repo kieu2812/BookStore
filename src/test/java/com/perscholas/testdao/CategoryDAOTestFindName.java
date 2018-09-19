@@ -7,21 +7,40 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.rules.SpringClassRule;
+import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
 import com.perscholas.model.Category;
 import com.perscholas.services.CategoryService;
 
-@ContextConfiguration(locations="classpath:application-context-test.xml")
+@ContextConfiguration(locations="/application-context-test.xml")
 @RunWith(Parameterized.class)
 public class CategoryDAOTestFindName {
 
+	
+	
+	@ClassRule
+    public static final SpringClassRule SPRING_CLASS_RULE = new SpringClassRule();
+
+    @Rule
+    public final SpringMethodRule springMethodRule = new SpringMethodRule();
+    
+	@Autowired
+	DataSource dataSource;
+	
+	
 	private String name;
 	private String expectedResult;
 	private List<Category> expected;

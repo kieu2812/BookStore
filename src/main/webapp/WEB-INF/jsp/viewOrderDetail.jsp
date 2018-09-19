@@ -145,7 +145,7 @@ input {
 
 	<c:choose>
 	
-	 <c:when test="${empty date }">
+	 <c:when test="${not empty month }">
 	<div>
 		<form method="POST" action="${pageContext.request.contextPath}/admin/order/monthly">
 			<input type="hidden" name="month" value="${month }"/>
