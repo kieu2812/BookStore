@@ -19,9 +19,9 @@ public class BookFormValidator implements Validator{
 	
 	 private static Logger log = Logger.getLogger(CustomerValidator.class);
 	 private static final Pattern ISBN_10 =
-	            Pattern.compile("[0-9A-Z\\-]{10}");
+	            Pattern.compile("[0-9A-Z]{10}");
 	 private static final Pattern ISBN_13 =
-	            Pattern.compile("([0-9]{3}[\\-][0-9]{10})|([A-Z0-9]{10})");
+	            Pattern.compile("([0-9]{3}[-][0-9]{10})|([A-Z0-9]{10})");
 	 
 	 
 

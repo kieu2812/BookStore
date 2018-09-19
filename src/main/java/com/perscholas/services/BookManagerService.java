@@ -40,7 +40,9 @@ public class BookManagerService extends AbstractDAO implements BookManagerDAO {
 		String action = bookForm.getAction();
 		
 		Book book = bookForm.getBook();
-
+		log.error("Action= "+ action);
+		log.error("Is Empty File= "+ bookForm.getFile().isEmpty());
+		
 		// upload and add new book is do the same step
 		if (!bookForm.getFile().isEmpty()) {
 			//1.upload file to server

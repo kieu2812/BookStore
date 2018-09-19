@@ -141,6 +141,7 @@ public class AdminController {
 		log.info("URL /book/updateProcess action: " + action);
 		log.info("URL /book/updateProcess invoicePrice: " + bookForm.getInvoicePrice());
 		log.info("URL /book/updateProcess bookName: " + bookForm.getBook().getName());
+		log.info("Is Empty FILE UPLOAD= " + bookForm.getFile().getOriginalFilename());
 		
 		Map<Integer, String> publishers = pubDAO.getAllNames();
 		model.addAttribute("publisherList", publishers);

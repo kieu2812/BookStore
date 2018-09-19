@@ -25,7 +25,7 @@
 	<div class="container">
 		<div class="panel panel-success" style="height:400px;">
 			<c:if test="${ not empty message}">
-				<div class="panel-heading successMessage"><h3>${message }</h3></div>
+				<div class="panel-heading successMessage text-center"><h3>${message }</h3></div>
 			</c:if>
 		</div>
 	</div> <%-- Container --%>		

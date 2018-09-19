@@ -27,12 +27,12 @@
 	<div class="container">
 		<div class="panel panel-danger" style="height:400px;">
 			
-			<div class="panel-heading errorMessage" >
+			<div class="panel-heading errorMessage text-center" >
 				<c:if test="${not empty message }">
 					<h3> ${message}</h3>
 				</c:if>
 			</div>
-			<div class="pannel-body erreMessage">${errors }
+			<div class="pannel-body erreMessage text-center">${errors }
 		
 			</div>
 		</div>
