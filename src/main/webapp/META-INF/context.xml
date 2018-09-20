@@ -1,13 +1,30 @@
 <Context>  
 	<Resource name="jdbc/springDataSource" auth="Container" type="javax.sql.DataSource"
-               maxActive="10" maxIdle="5" maxWait="10000" removeAbandoned="true"
+               maxActive="30" maxIdle="5" maxWait="10000" removeAbandoned="true"
                removeAbandonedTimeout="60" logAbandoned="true"
                timeBetweenEvictionRunsMillis="5000"
                username="system"
                password="password"
                driverClassName="oracle.jdbc.OracleDriver"
                url="jdbc:oracle:thin:@localhost:1521:Orcl"
+               testOnBorrow="true" testOnReturn="true" testOnConnect="true"
+     			validationQuery="select 1 from dual"
+               
                />      
+<!-- 	<Resource name="jdbc/springDataSource"
+	        auth="Container" factory="org.apache.naming.factory.BeanFactory"
+	        type="com.mchange.v2.c3p0.ComboPooledDataSource"
+	        minPoolSize="3"
+	        maxPoolSize="20"
+	        acquireIncrement="1" 
+	        testConnectionOnCheckin="true" 
+	        idleConnectionTestPeriod="300"
+	        maxIdleTimeExcessConnections="240"
+	        user="system" password="password"
+	        driverClass="oracle.jdbc.OracleDriver" 
+	        jdbcUrl="jdbc:oracle:thin"
+	/> -->
+
      
                                        
 </Context>

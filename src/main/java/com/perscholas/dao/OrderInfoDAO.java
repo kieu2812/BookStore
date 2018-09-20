@@ -54,7 +54,7 @@ public interface OrderInfoDAO {
 				"								from orders o  " + 
 				"								inner join CUSTOMER_CARD cc on cc.CARDID= o.CARDID " + 
 				"								inner join customer c on c.ID= o.CUSTOMERID  " + 
-				"				        inner join SHIPPING_ADDRESS s on s.ID= o.ID " + 
+				"				        inner join SHIPPING_ADDRESS s on s.ID= o.Shippingid " + 
 				"								inner join (select sum(d.quantity* d.unit_price) as amount , d.ORDERID  " + 
 				"								from  order_detail d  " + 
 				"								group by d.ORDERID " + 

@@ -6,6 +6,7 @@ public class Book {
 	private int id;
 	private String name;
 	private String hardCoverPath;
+	
 	private int authorId;
 	private int publisherId;
 	private String ISBN_10;

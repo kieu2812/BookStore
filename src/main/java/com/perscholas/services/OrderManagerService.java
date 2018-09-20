@@ -53,7 +53,7 @@ public class OrderManagerService extends AbstractDAO implements OrderManagerDAO 
 	
 	@SuppressWarnings("unused")
 	@Override
-	@Transactional(rollbackFor= {OutOfStockException.class, SQLException.class, Exception.class})
+	@Transactional(rollbackFor= {OutOfStockException.class, SQLException.class, Exception.class},value="general")
 	public int saveOrders(ShoppingCart cart) throws OutOfStockException, SQLException   {
 		
 		log.info("Transaction is active? " + TransactionSynchronizationManager.isActualTransactionActive());

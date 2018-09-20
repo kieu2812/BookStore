@@ -10,8 +10,8 @@ import com.perscholas.exception.StoreFileException;
 import com.perscholas.exception.UpdateBookException;
 import com.perscholas.model.BookForm;
 
-@Transactional
 public interface BookManagerDAO  {
+
 	public boolean saveBook(BookForm bookForm) throws IOException, SQLException, StoreFileException, UpdateBookException, InsertBookException ;
 
 }
