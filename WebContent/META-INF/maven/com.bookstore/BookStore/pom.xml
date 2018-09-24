@@ -85,6 +85,13 @@
 			<artifactId>spring-tx</artifactId>
 			<version>5.0.8.RELEASE</version>
 		</dependency>
+         <!-- c3p0 Conenction pool -->
+              <dependency>
+                  <groupId>com.mchange.c3p0</groupId>
+                  <artifactId>com.springsource.com.mchange.v2.c3p0</artifactId>
+                  <version>0.9.1.2</version>
+              </dependency>
+ 
 
 		<dependency>
 			<groupId>taglibs</groupId>

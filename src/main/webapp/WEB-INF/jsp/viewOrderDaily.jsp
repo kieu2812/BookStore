@@ -17,13 +17,20 @@
 <link href="<c:url value='/resources/css/main.css'/>" rel="stylesheet" />
 
 <title>Order Report Daily</title>
+<script type="text/javascript" language="javascript">
+function GetDateTime() {
 
+    var param1 = new Date();
+    document.getElementById('dateReport').value = param1;
+
+}
+</script>
 </head>
-<body>
-	<fmt:formatDate  value="<%=new Date()%>"  
+<body onload="GetDateTime();">
+<%-- 	<fmt:formatDate  value="<%=new Date()%>"  
                 type="date" 
                 pattern="mm/dd/yyyy"
-                var="currentDay"/>
+                var="currentDay"/> --%>
 	<jsp:include page="header.jsp"></jsp:include>
 
 	<fmt:parseNumber var = "currentPage" value='<%=request.getParameter("page") %>'/>
@@ -43,7 +50,7 @@
 						<label>Choose date</label>
 					</div>
 					<div class="col-sm-5">
-						<input class="form-control" name="date" id="dateReport" required type="date" value="${currentDay}"	/>
+						<input class="form-control" name="date" id="dateReport" required type="date"  pattern="\d{1,2}/\d{1,2}/\d{4}" placeholder="mm/dd/yyyy"	/>
 					</div>
 					<div class="col-sm-3">
 						<input type="submit" id="btnReport" class="btn btn-info" value="Get Report">

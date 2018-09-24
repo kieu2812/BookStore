@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.perscholas.model.UserAttempts;
 import com.perscholas.model.UserRole;
 
-@Transactional
+//@Transactional("txHibernate")
 @Repository
 public class UserRoleDaoImpl {
 	static Logger log = Logger.getLogger(UserRoleDaoImpl.class);
@@ -26,26 +27,35 @@ public class UserRoleDaoImpl {
 	
 	@SuppressWarnings("unchecked")
 	public UserRole getByUserName(String username) {
-
-		List<UserRole> users = null;
-		Query query  = sessionFactory.getCurrentSession()
-			.createQuery("from UserRole where username=?")
-			.setParameter(0, username);
-		users = query.list();
-
-		if (users!=null && !users.isEmpty()) {
-			return users.get(0);
-		} else {
-			return null;
+		Session session = null;
+		List<UserRole> users = null;		
+		try {		
+			//session = sessionFactory.getCurrentSession();
+			session = sessionFactory.openSession();
+			Query query  = session.createQuery("from UserRole where username=?")
+				.setParameter(0, username);
+			users = query.list();
+			
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+			//this.closeFactory();
 		}
-
+		
+		return (users!=null && !users.isEmpty()) ? users.get(0) : null;
 	}
-
+	
+	//@Transactional("txHibernate")
 	public boolean updateFailAttempts(String username) {
 		boolean isLocked = false;
 	
+		Session session = null;
 		try {
-			Session session = this.sessionFactory.getCurrentSession();
+			//session = this.sessionFactory.getCurrentSession();
+			session = this.sessionFactory.openSession();
 
 			if (this.getUserAttempts(username) == null) {// if no record, insert a new
 				if(this.getByUserName(username) != null) {	
@@ -84,13 +94,21 @@ public class UserRoleDaoImpl {
 		catch (Exception e) {
 			log.error("updateFailAttempts" + e.getMessage());
 			throw e;
+		} finally {		
+			
+			if (session != null) {
+				session.close();
+			}
+			//this.closeFactory();
+			
 		}
 		
 		log.debug("isLocked? " + isLocked);
 		return isLocked;
 	}
-
+	
 	public void resetFailAttempts(String username) {
+		Session session = null;
 		try {
 			
 			log.info("reset fail attempts");
@@ -98,7 +116,8 @@ public class UserRoleDaoImpl {
 			UserAttempts user = this.getUserAttempts(username);	
 			
 			if (user != null) {
-				Session session = this.sessionFactory.getCurrentSession();
+				//session = this.sessionFactory.getCurrentSession();
+				session = this.sessionFactory.openSession();
 				session.evict(user);
 				user.setAttempts(0);
 				user.setLastModified(getCurrentTimeStamp());
@@ -110,18 +129,49 @@ public class UserRoleDaoImpl {
 		}
 		catch (Exception e) {
 			log.error("Error at resetFailAttempts: " + e.getMessage());
+		} finally {
+			
+			if (session != null) {
+				session.close();
+			}
+			//this.closeFactory();
+			
 		}
 	}
 
 	public UserAttempts getUserAttempts(String username) {
-		Query query = sessionFactory.getCurrentSession()
-			.createQuery("from UserAttempts where username=?")
-			.setParameter(0, username);
+		Session session = null;
+		List<UserAttempts> users = null;
+		try {
+			//session = sessionFactory.getCurrentSession();
+			session = sessionFactory.openSession();
+			Query query = session.createQuery("from UserAttempts where username=?")
+				.setParameter(0, username);
+			
+			users = Collections.checkedList(query.list(), UserAttempts.class);
+			
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+			//this.closeFactory();
+		}
 		
-		List<UserAttempts> users = Collections.checkedList(query.list(), UserAttempts.class);
 		
-		return (!users.isEmpty()) ? users.get(0) : null;
+		return (users != null && !users.isEmpty()) ? users.get(0) : null;
 	}	
+	
+	public void closeFactory() {
+	    if (sessionFactory != null) {
+	        try {
+	            sessionFactory.close();
+	        } catch (HibernateException ignored) {
+	            log.error("Couldn't close SessionFactory", ignored);
+	        }
+	    }
+	}
 	
 	private java.sql.Timestamp getCurrentTimeStamp() {
 

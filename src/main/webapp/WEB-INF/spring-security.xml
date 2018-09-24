@@ -27,6 +27,7 @@
     
     <beans:bean id="myAuthenticationSuccessHandler" class="com.perscholas.auth.MySimpleUrlAuthenticationSuccessHandler" />
     
+    
     <beans:bean id="customUserDetailsService" class="com.perscholas.auth.CustomUserDetailsService"/>
 		
 	<beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
